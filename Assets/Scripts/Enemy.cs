@@ -33,10 +33,15 @@ public class Enemy : MonoBehaviour
         pointIndex++;
         if (pointIndex > WayPoints.instance.GetLength() - 1)
         {
-            Destroy(gameObject);
+            Die();
             return;
-            //TODO gameover
         }
         targetPos = WayPoints.instance.GetWayPoint(pointIndex);
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+        EnemySpawner.Instance.DecreaseEnemyCount();
     }
 }
