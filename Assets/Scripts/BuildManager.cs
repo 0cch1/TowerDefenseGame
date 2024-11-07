@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BuildManager : MonoBehaviour
@@ -12,9 +13,17 @@ public class BuildManager : MonoBehaviour
 
     public TurretData selectedTurretData;
 
+    private int money = 1000;
+    public TextMeshProUGUI moneyText;
+    private Animator moneyTextAni;
+
+    public UpgradeUI upgradeUI;
+    private MapCube upgradeCube;
+
     private void Awake()
     {
         Instance = this;
+        moneyTextAni = moneyText.GetComponent<Animator>();
     }
     public void OnStandardSeleced(bool isOn)
     {
@@ -36,6 +45,53 @@ public class BuildManager : MonoBehaviour
         {
             selectedTurretData = laserTurretData;
         }
+    }
+
+    public bool IsEnough(int need)
+    {
+        if(need <= money)
+        {
+            return true;
+        }
+        else
+        {
+            MoneyFlicker();
+            return false;
+        }
+    }
+
+    public void ChangeMoney(int value)
+    {
+        this.money += value;
+        moneyText.text = "$ "+ money.ToString();
+    }
+
+    private void MoneyFlicker()
+    {
+        moneyTextAni.SetTrigger("flicker");
+    }
+
+    public void ShowUpgradeUI(MapCube cube, Vector3 position, bool isDisableUpgrade)
+    {
+        upgradeCube = cube;
+        upgradeUI.Show(position, isDisableUpgrade);
+    }
+
+    public void HideUpgradeUI()
+    {
+        upgradeUI.Hide();
+    }
+
+    public void OnTurretUpgrade()
+    {
+        upgradeCube?.OnTurretUpgrade();
+        HideUpgradeUI();
+    }
+
+    public void OnTurretDestroy()
+    {
+        upgradeCube?.OnTurretDestroy();
+        HideUpgradeUI();
     }
 
 }
