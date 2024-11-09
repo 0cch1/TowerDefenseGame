@@ -13,6 +13,7 @@ public class UpgradeUI : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
+
     public void Show(Vector3 position, bool isDisableUpgrade)
     {
         if(transform.localScale!= Vector3.zero && transform.position == position)

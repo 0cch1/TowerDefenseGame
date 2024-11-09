@@ -18,6 +18,7 @@ public class MapCube : MonoBehaviour
     {
         normalColor = GetComponent<MeshRenderer>().material.color;   
     }
+
     private void OnMouseDown()
     {
         if (EventSystem.current.IsPointerOverGameObject() == true) return;
@@ -29,8 +30,6 @@ public class MapCube : MonoBehaviour
         {
             BuildTurret();
         }
-       
-        
     }
 
     private void BuildTurret()
@@ -65,6 +64,7 @@ public class MapCube : MonoBehaviour
     {
         if (BuildManager.Instance.IsEnough(turretData.upgradeCost))
         {
+            isUpgraded= true;
             BuildManager.Instance.ChangeMoney(-turretData.upgradeCost);
             Destroy(turretGO);
             turretGO = InstantiateTurret(turretData.turretUpgradedPrefab);

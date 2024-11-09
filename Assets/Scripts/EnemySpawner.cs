@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
 
     private int enemyCount = 0;
 
-
+    private Coroutine spawnCoroutine;
     public void Awake()
     {
         if(Instance != null && Instance != this)
@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         // Start the enemy spawning coroutine when the game starts
-        StartCoroutine(SpawnEnemy());
+        spawnCoroutine = StartCoroutine(SpawnEnemy());
     }
 
     // Update is called once per frame
@@ -58,6 +58,17 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         yield return null; // Couroutine is complete, yield
+
+        while(enemyCount > 0)
+        {
+            yield return 0;
+        }
+        GameManager.Instance.Win();
+    }
+
+    public void StopSpawn()
+    {
+        StopCoroutine(spawnCoroutine);
     }
 
     public void DecreaseEnemyCount()

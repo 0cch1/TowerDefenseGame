@@ -10,8 +10,8 @@ public class Enemy : MonoBehaviour
 
     private Vector3 targetPos = Vector3.zero;
 
-    public int hp = 100;
-    private int maxHP = 0;
+    public float hp = 100;
+    private float maxHP = 0;
     public GameObject explosionPrefab;
 
     private Slider hpSlider;
@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviour
         pointIndex++;
         if (pointIndex > WayPoints.instance.GetLength() - 1)
         {
+            GameManager.Instance.Fail();
             Die();
             return;
         }
@@ -57,12 +58,14 @@ public class Enemy : MonoBehaviour
         Destroy(go,1);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
+        if (hp <= 0) return;
         hp -= damage;
-        hpSlider.value = (float)hp / maxHP;
+        hpSlider.value = hp / maxHP;
         if(hp <= 0)
         {
-            Die();        }
+            Die();
+        }
     }
 }

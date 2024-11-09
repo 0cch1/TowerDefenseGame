@@ -14,7 +14,7 @@ public class Turret : MonoBehaviour
 
     private Transform head;
 
-    private void Start()
+    protected virtual void Start()
     {
         head = transform.Find("Head");
     }
@@ -39,7 +39,7 @@ public class Turret : MonoBehaviour
         }
     }
 
-    private void Attack()
+    protected virtual void Attack()
     {
         if (enemies == null || enemies.Count == 0) return;
         //GameObject go = enemies[0];
@@ -59,6 +59,13 @@ public class Turret : MonoBehaviour
 
     public Transform GetTarget()
     {
+        if(enemies != null && enemies.Count > 0 && enemies[0]!= null)
+        {
+            return enemies[0].transform;
+        }
+
+        if(enemies == null || enemies.Count == 0) return null;
+
         List<int> indexList = new List<int>();
         for(int i=0; i<enemies.Count; i++)
         {
@@ -81,14 +88,10 @@ public class Turret : MonoBehaviour
 
     private void DirectionControl()
     {
-        GameObject target = null;
-        if(enemies!=null && enemies.Count > 0)
-        {
-            target= enemies[0];
-        }
+        Transform target = GetTarget();
         if (target == null) return;
 
-        Vector3 targetPos = target.transform.position;
+        Vector3 targetPos = target.position;
         targetPos.y = head.position.y;
 
         head.LookAt(targetPos);
